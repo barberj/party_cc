@@ -1,4 +1,4 @@
-require "party_mockumentary/version"
+require "party_cc/version"
 require 'HTTParty'
 require 'addressable/uri'
 require 'pp'
@@ -36,4 +36,4 @@ module HTTParty
   end
 end
 
-module PartyMockumentary; end
+module PartyCC; end

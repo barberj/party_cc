@@ -1,12 +1,12 @@
-# PartyMockumentary
+# PartyCC
 
-TODO: Write a gem description
+CarbonCopy HTTParty responses to disk for mocking use later
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'party_mockumentary'
+    gem 'party_cc'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install party_mockumentary
+    $ gem install party_cc
 
 ## Usage
 

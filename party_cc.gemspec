@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'party_mockumentary/version'
+require 'party_cc/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "party_mockumentary"
-  spec.version       = PartyMockumentary::VERSION
+  spec.name          = "party_cc"
+  spec.version       = PartyCC::VERSION
   spec.authors       = ["barberj"]
   spec.email         = ["barber.justin@gmail.com"]
   spec.description   = %q{Document HTTParty responses for mocking}
   spec.summary       = %q{Document HTTParty responses for mocking }
-  spec.homepage      = "https://github.com/barberj/party_mockumentary"
+  spec.homepage      = "https://github.com/barberj/party_cc"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -21,5 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 
-  spec.add_dependency "HTTParty"
+  spec.add_dependency "httparty"
 end
