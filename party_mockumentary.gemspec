@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = PartyMockumentary::VERSION
   spec.authors       = ["barberj"]
   spec.email         = ["barber.justin@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Document HTTParty responses for mocking}
+  spec.summary       = %q{Document HTTParty responses for mocking }
+  spec.homepage      = "https://github.com/barberj/party_mockumentary"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
