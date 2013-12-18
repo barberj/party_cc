@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-Just require gem and it will write response down to disk in the format '#{method}_\#{path}_\#{stmp}.txt'
+Just require gem and it will write responses down to disk in the format '#{method}_#{path}_#{stmp}.txt'
   ```ruby
     require 'party_cc'
   ```
