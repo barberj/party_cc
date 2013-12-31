@@ -1,5 +1,5 @@
 require "party_cc/version"
-require 'HTTParty'
+require 'httparty'
 require 'addressable/uri'
 require 'pp'
 
