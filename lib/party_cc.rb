@@ -19,15 +19,25 @@ module HTTParty
 
             file_name = "#{method}_\#{path}_\#{stmp}.txt"
 
-            buffer = StringIO.new
-            PP.pp(rsp, buffer)
+            req_buffer = StringIO.new
+            rsp_buffer = StringIO.new
 
-            prettied_rsp = buffer.string
+            PP.pp(args, req_buffer)
+            PP.pp(rsp, rsp_buffer)
+
+            prettied_req = req_buffer.string
               .gsub('=>', ': ')
               .gsub('nil', 'null')
 
-            File.write(file_name, prettied_rsp) do |f|
-              PP.pp(rsp, f)
+            prettied_rsp = rsp_buffer.string
+              .gsub('=>', ': ')
+              .gsub('nil', 'null')
+
+            File.open(file_name, 'w') do |fh|
+              fh.write "Request [#{method}]\n"
+              fh.write "\#{prettied_req}\n"
+              fh.write "Response\n"
+              fh.write "\#{prettied_rsp}"
             end
           end
         end
