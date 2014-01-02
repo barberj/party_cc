@@ -5,6 +5,12 @@ require 'pp'
 
 module HTTParty
   class << self
+    def decode_ruby buffer
+      buffer.string
+        .gsub('=>', ': ')
+        .gsub('nil', 'null')
+    end
+
     request_methods = ['get', 'post', 'patch', 'put', 'delete', 'head', 'options']
     request_methods.each do |method|
       class_eval <<-EOT, __FILE__, __LINE__ + 1
@@ -25,20 +31,11 @@ module HTTParty
             PP.pp(args, req_buffer)
             PP.pp(rsp, rsp_buffer)
 
-            prettied_req = req_buffer.string
-              .gsub('=>', ': ')
-              .gsub('nil', 'null')
+            prettied_req = decode_ruby req_buffer
+            prettied_rsp = decode_ruby rsp_buffer
 
-            prettied_rsp = rsp_buffer.string
-              .gsub('=>', ': ')
-              .gsub('nil', 'null')
-
-            File.open(file_name, 'w') do |fh|
-              fh.write "Request [#{method}]\n"
-              fh.write "\#{prettied_req}\n"
-              fh.write "Response\n"
-              fh.write "\#{prettied_rsp}"
-            end
+            File.write("request_\#{file_name}", prettied_req)
+            File.write("response_\#{file_name}", prettied_rsp)
           end
         end
       EOT
