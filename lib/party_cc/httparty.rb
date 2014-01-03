@@ -1,15 +1,24 @@
 module HTTParty
   class << self
-    def decode_ruby buffer
-      buffer.string
-        .gsub('=>', ': ')
-        .gsub('nil', 'null')
-    end
 
     def generate_stub method, response_filename, url, params
       %Q|stub_request(:#{method}, '#{url}')
         .with(#{params})
         .to_return(File.new('#{response_filename}'))|
+    end
+
+    def pp_body body
+      buffer = StringIO.new
+
+      jsonified = JSON.load body
+      PP.pp(jsonified, buffer)
+
+      buffer
+    rescue
+      xmldoc = REXML::Document.new body
+      xmldoc.write buffer
+
+      buffer
     end
 
     request_methods = ['get', 'post', 'patch', 'put', 'delete', 'head', 'options']
@@ -27,11 +36,7 @@ module HTTParty
           base_file_name = "#{method}_\#{path}_\#{stmp}.txt"
           response_file_name = "response_\#{base_file_name}"
 
-          rsp_buffer = StringIO.new
-
-          PP.pp(rsp, rsp_buffer)
-
-          prettied_rsp = decode_ruby rsp_buffer
+          prettied_rsp = pp_body(rsp.response.body).string
 
           File.write("stub_\#{base_file_name}", generate_stub(:#{method}, response_file_name, *args))
           File.open(response_file_name, 'w') do |f|
