@@ -19,7 +19,6 @@ class Net::HTTPResponse
         res.add_field k, v
       end
       res.instance_variable_set :@raw_headers, buffer.string
-      puts 'set raw'
       res
     end
   end
