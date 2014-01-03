@@ -23,7 +23,7 @@ Just require gem and it will generate two files.
     require 'party_cc'
   ```
 
-The stub_request will be written down to disk in the format 'stub_#{method}\_#{path}\_#{timestamp}.txt'
+The stub_request will be written down to disk in the format 'stub_#{method}\_#{path}\_#{timestamp}.txt'  
 The request response will be written down to disk in the format 'response_#{method}\_#{path}\_#{timestamp}.txt'
 
 ## Contributing
