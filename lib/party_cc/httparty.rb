@@ -9,7 +9,7 @@ module HTTParty
     def generate_stub method, response_filename, url, params
       %Q|stub_request(:#{method}, '#{url}')
         .with(#{params})
-        .to_return('#{response_filename}')|
+        .to_return(File.new('#{response_filename}'))|
     end
 
     request_methods = ['get', 'post', 'patch', 'put', 'delete', 'head', 'options']
