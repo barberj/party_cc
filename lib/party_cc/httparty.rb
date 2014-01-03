@@ -6,6 +6,12 @@ module HTTParty
         .gsub('nil', 'null')
     end
 
+    def generate_stub method, response_filename, url, params
+      %Q|stub_request(:#{method}, '#{url}')
+        .with(#{params})
+        .to_return('#{response_filename}')|
+    end
+
     request_methods = ['get', 'post', 'patch', 'put', 'delete', 'head', 'options']
     request_methods.each do |method|
       class_eval <<-EOT, __FILE__, __LINE__ + 1
@@ -18,19 +24,17 @@ module HTTParty
           path = Addressable::URI.parse(args[0])
             .path.split('/').join('_').gsub(/^_/,'')
 
-          file_name = "#{method}_\#{path}_\#{stmp}.txt"
+          base_file_name = "#{method}_\#{path}_\#{stmp}.txt"
+          response_file_name = "response_\#{base_file_name}"
 
-          req_buffer = StringIO.new
           rsp_buffer = StringIO.new
 
-          PP.pp(args, req_buffer)
           PP.pp(rsp, rsp_buffer)
 
-          prettied_req = decode_ruby req_buffer
           prettied_rsp = decode_ruby rsp_buffer
 
-          File.write("request_\#{file_name}", prettied_req)
-          File.open("response_\#{file_name}", 'w') do |f|
+          File.write("stub_\#{base_file_name}", generate_stub(:#{method}, response_file_name, *args))
+          File.open(response_file_name, 'w') do |f|
             f.write rsp.response.instance_variable_get :@raw_headers
             f.write ''
             f.write prettied_rsp

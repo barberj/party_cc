@@ -18,10 +18,13 @@ Or install it yourself as:
 
 ## Usage
 
-Just require gem and it will write responses down to disk in the format '#{method}\_#{path}\_#{timestamp}.txt'
+Just require gem and it will generate two files.
   ```ruby
     require 'party_cc'
   ```
+
+The stub_request will be written down to disk in the format 'stub_#{method}\_#{path}\_#{timestamp}.txt'
+The request response will be written down to disk in the format 'response_#{method}\_#{path}\_#{timestamp}.txt'
 
 ## Contributing
 
