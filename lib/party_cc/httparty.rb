@@ -33,7 +33,7 @@ module HTTParty
       headers.gsub!(/(Content-Length|content-length)(:\s+)(\d+)/, '\1\2<CONTENTLENGTH>')
       size_without_substituion = headers.bytesize + rsp.bytesize - 15
       size = size_without_substituion + size_without_substituion.to_s.length
-      headers.gsub!("<CONTENTLENGTH>", size.to_s)
+      headers.gsub("<CONTENTLENGTH>", size.to_s)
     end
 
 
