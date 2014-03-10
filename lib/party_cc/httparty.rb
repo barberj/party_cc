@@ -1,7 +1,7 @@
 module HTTParty
   class << self
 
-    def generate_stub method, response_filename, url, params
+    def generate_stub(method, response_filename, url, params={})
       %Q|stub_request(:#{method}, '#{url}')
         .with(#{params})
         .to_return(File.new('#{response_filename}'))|
@@ -11,19 +11,22 @@ module HTTParty
       buffer.string
         .gsub('=>', ': ')
         .gsub('nil', 'null')
+    rescue
+      buffer
     end
 
-    def pp_body body
+    def pp_body(body, type)
       buffer = StringIO.new
-
-      jsonified = JSON.load body
-
-      PP.pp(jsonified, buffer)
-
-      buffer
-    rescue
-      xmldoc = REXML::Document.new body
-      xmldoc.write buffer
+      case
+      when type.downcase.include?('json')
+        jsonified = JSON.load body
+        PP.pp(jsonified, buffer)
+      when type.downcase.include?('xml')
+        xmldoc = REXML::Document.new(body)
+        xmldoc.write(buffer)
+      else
+        PP.pp(body, buffer)
+      end
 
       buffer
     end
@@ -52,14 +55,14 @@ module HTTParty
           base_file_name = "#{method}_\#{path}_\#{stmp}.txt"
           response_file_name = "response_\#{base_file_name}"
 
-          prettied_rsp = decode_ruby(pp_body(rsp.response.body))
-          adjusted_headers = adjust_content_length_for_pretty_print prettied_rsp, rsp
+          prettied_rsp = decode_ruby(pp_body(rsp.response.body, rsp.headers['content-type']))
+          adjusted_headers = adjust_content_length_for_pretty_print(prettied_rsp, rsp)
 
-          File.write("stub_\#{base_file_name}", generate_stub(:#{method}, response_file_name, *args))
           File.open(response_file_name, 'w') do |f|
-            f.write adjusted_headers
-            f.write prettied_rsp
+            f.write(adjusted_headers)
+            f.write(prettied_rsp)
           end
+          File.write("stub_\#{base_file_name}", generate_stub(:#{method}, response_file_name, *args))
 
           rsp
         end
