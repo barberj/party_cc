@@ -1,3 +1,5 @@
+require 'json'
+
 module HTTParty
   class << self
 
@@ -18,16 +20,18 @@ module HTTParty
     def pp_body(body, type)
       buffer = StringIO.new
       case
-      when type.downcase.include?('json')
+      when type && type.downcase.include?('json')
         jsonified = JSON.load body
         PP.pp(jsonified, buffer)
-      when type.downcase.include?('xml')
+      when type && type.downcase.include?('xml')
         xmldoc = REXML::Document.new(body)
         xmldoc.write(buffer)
       else
         PP.pp(body, buffer)
       end
-
+    rescue
+      PP.pp(body, buffer)
+    ensure
       buffer
     end
 
