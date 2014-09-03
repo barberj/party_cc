@@ -29,9 +29,10 @@ module HTTParty
       else
         PP.pp(body, buffer)
       end
+
+      buffer
     rescue
       PP.pp(body, buffer)
-    ensure
       buffer
     end
 
